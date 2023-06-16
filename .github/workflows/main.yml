@@ -1,0 +1,35 @@
+name: Sonar Execute
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  sonar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Print git
+        run: echo ${{ github.ref }}
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          CURRENT_BRANCH: ${{ github.ref }}
+      - name: Print Current Branch
+        run: echo ${{ env.CURRENT_BRANCH }}
+
+      - name: Print secrect
+        run: echo ${{ env.SONAR_TOKEN }}
+      - name: Print git
+        run: echo ${{ github.ref }}
+
